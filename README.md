@@ -9,6 +9,11 @@ without hand-assembling every resource and reference. It is intentionally small:
 Pydantic for input validation, plain Python dictionaries for output, and no
 runtime dependency beyond `pydantic`.
 
+[![CI](https://github.com/NirvyaLabs/krama-core/actions/workflows/ci.yml/badge.svg)](https://github.com/NirvyaLabs/krama-core/actions/workflows/ci.yml)
+[![PyPI version](https://badge.fury.io/py/krama-core.svg)](https://pypi.org/project/krama-core/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 ## Installation
 
 ```bash
