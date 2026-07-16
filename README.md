@@ -77,6 +77,29 @@ Krama Core v0.1 supports three ABDM care contexts:
 
 Each bundle is returned as a JSON-serializable Python dictionary.
 
+## SDK Client
+
+Krama Core also includes a secure async client foundation for ABDM workflows:
+
+```python
+from krama import KramaClient
+
+async with KramaClient(
+    client_id="your-client-id",
+    client_secret="your-client-secret",
+) as krama:
+    result = await krama.abha.create_via_mobile("+91 98765 43210")
+    print(result.transaction_id)
+```
+
+Security defaults:
+
+- Client secrets use Pydantic secret types and are redacted from repr/errors
+- Gateway URLs must use HTTPS unless targeting localhost for tests
+- Access tokens are cached and refreshed behind an async lock
+- Gateway errors avoid echoing request payloads or secrets
+- Tests use mock transports only; no real ABDM requests are made in CI
+
 ## What Krama Handles
 
 - `Bundle.type = "document"`
