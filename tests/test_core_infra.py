@@ -222,6 +222,8 @@ def test_krama_client_exposes_abha_and_closes_cleanly():
 
     try:
         assert client.abha is not None
+        assert client.hip is not None
+        assert client.hiu is not None
         assert client.config.client_secret.get_secret_value() == "secret"
     finally:
         run(client.close())

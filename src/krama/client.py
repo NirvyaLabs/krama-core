@@ -7,6 +7,9 @@ from pydantic import SecretStr
 from krama.abha import ABHAClient
 from krama.auth import ABDMTokenManager
 from krama.config import KramaConfig
+from krama.hip import HIPClient
+from krama.hiu import HIUClient
+from krama.templates import TemplateRegistry
 from krama.utils.http import ABDMHttpClient
 
 
@@ -45,6 +48,9 @@ class KramaClient:
         self.http.set_token_provider(self.tokens.get_token)
 
         self.abha = ABHAClient(self.http)
+        self.hip = HIPClient(self.http)
+        self.hiu = HIUClient(self.http)
+        self.templates = TemplateRegistry()
 
     async def close(self) -> None:
         await self.http.close()

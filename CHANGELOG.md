@@ -5,6 +5,48 @@ All notable changes to Krama Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-07-21
+
+### Added
+
+- Clinical domain template models: `ClinicalTemplate` and `TemplateSection`
+- `TemplateRegistry` with built-in loading, custom registration, lookup, and
+  domain/template listing
+- Built-in templates for 12 clinical domains: allopathy, dentistry, ayurveda,
+  homeopathy, surgery, pediatrics, ophthalmology, OB-GYN, psychiatry,
+  dermatology, orthopedics, and ENT
+- Surgery templates for pre-op assessment, operative note, and post-op follow-up
+- OB-GYN templates for antenatal and postnatal visits
+- Template structure validator and tests for built-in parsing, missing templates,
+  custom registration, and domain coverage
+
+## [0.4.0] - 2026-07-20
+
+### Added
+
+- HIP Milestone 2 clients for discovery callbacks, care-context CRUD,
+  care-context link/unlink, and FHIR bundle publishing
+- Discovery callback queue pattern: handlers acknowledge immediately and defer
+  processing/response work to async workers
+- HIU Milestone 3 clients for consent request/status/revoke events and health
+  data requests
+- HIU encrypted data receiver that uses Krama crypto helpers to derive keys,
+  decrypt AES-GCM payloads, parse JSON, and validate FHIR Bundle payloads
+- Mock-only tests covering HIP and HIU gateway flows without real network calls
+
+## [0.3.0] - 2026-07-20
+
+### Added
+
+- FHIR R4 resource builders for Patient, Practitioner, Organization, Encounter,
+  Condition, Observation, MedicationRequest, DiagnosticReport,
+  AllergyIntolerance, Procedure, and Composition
+- Fluent `OPConsultBuilder` and `PrescriptionBuilder` document composition APIs
+- ECDH key exchange helpers using X25519
+- AES-256-GCM encryption/decryption helpers with HKDF-SHA256 key derivation
+- 100% test coverage for the crypto module, including encrypt/decrypt roundtrip,
+  tamper rejection, and invalid key/nonce handling
+
 ## [0.2.0] - 2026-07-16
 
 ### Added
