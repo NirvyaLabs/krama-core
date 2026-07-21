@@ -4,10 +4,11 @@
 
 **Built by [Nirvya Labs](https://github.com/NirvyaLabs).**
 
-Krama Core helps developers generate ABDM-compliant FHIR R4 document bundles
-without hand-assembling every resource and reference. It is intentionally small:
-Pydantic for input validation, plain Python dictionaries for output, and no
-runtime dependency beyond `pydantic`.
+Krama Core helps developers build secure healthcare integrations: ABDM-compliant
+FHIR R4 bundles, HIP/HIU flows, encryption, clinical templates, gateway
+resilience, WhatsApp messaging, AI-assisted clinical workflows, and country
+adapters. It stays Python-first: Pydantic for input validation, plain Python
+dictionaries for FHIR output, and optional extras for provider-specific services.
 
 [![CI](https://github.com/NirvyaLabs/krama-core/actions/workflows/ci.yml/badge.svg)](https://github.com/NirvyaLabs/krama-core/actions/workflows/ci.yml)
 [![PyPI version](https://badge.fury.io/py/krama-core.svg)](https://pypi.org/project/krama-core/)
@@ -18,6 +19,13 @@ runtime dependency beyond `pydantic`.
 
 ```bash
 pip install krama-core
+```
+
+Optional integrations:
+
+```bash
+pip install "krama-core[ai]"
+pip install "krama-core[whatsapp]"
 ```
 
 For local development:
@@ -253,6 +261,113 @@ registry.register(
 )
 ```
 
+## Gateway Resilience
+
+Gateway calls can be wrapped with retry, circuit breaker, and health checks:
+
+```python
+from krama.gateway import CircuitBreaker, RetryConfig, retry_gateway_call
+
+breaker = CircuitBreaker()
+
+
+@retry_gateway_call(RetryConfig(max_retries=3))
+async def notify_gateway():
+    return await krama.http.post("/v1/hip/health-information/notify", json={})
+
+
+result = await breaker.execute(notify_gateway)
+health = await krama.gateway_health.check()
+print(health.connected, health.latency, health.last_successful_call)
+```
+
+Retries are limited to timeouts and 5xx responses. 4xx gateway responses are
+treated as client errors and are not retried.
+
+## WhatsApp
+
+The WhatsApp module normalizes inbound messages and routes outbound sends
+through a configured provider:
+
+```python
+from krama.whatsapp import TemplateMessage, WhatsAppSender
+from krama.whatsapp.providers import MetaDirectProvider
+
+provider = MetaDirectProvider(
+    access_token="meta-token",
+    phone_number_id="phone-number-id",
+)
+sender = WhatsAppSender(provider)
+
+await sender.send_text("919876543210", "Your appointment is confirmed.")
+await sender.send_template(
+    "919876543210",
+    TemplateMessage(
+        template_name="appointment_reminder",
+        params={"name": "Ravi", "date": "6 May"},
+        language="en",
+    ),
+)
+```
+
+Supported providers: AiSensy, Gupshup, and Meta WhatsApp Cloud API. Webhooks are
+parsed into one `InboundMessage` schema regardless of provider.
+
+## AI
+
+Clinical AI helpers are optional and provider-routed. All clinical outputs carry
+the same safety rule: AI output is a suggestion only and requires physician
+review.
+
+```python
+from krama.ai import AIAssistant
+from krama.ai.providers import GeminiProvider, GroqProvider, LLMRouter
+
+router = LLMRouter(
+    [
+        GeminiProvider(api_key="gemini-key"),
+        GroqProvider(api_key="groq-key"),
+    ]
+)
+ai = AIAssistant(router)
+
+suggestions = await ai.clinical_nlp.suggest_soap_improvement(
+    "assessment",
+    "Essential hypertension",
+)
+codes = await ai.icd_coder.suggest_codes("Essential hypertension")
+triage = await ai.triage.classify_urgency("fever for three days")
+drug_check = ai.drug_checker.check_interactions(
+    medications=["Warfarin", "Aspirin"],
+    patient_allergies=[],
+)
+```
+
+The router tries providers in priority order and automatically fails over when a
+provider errors or returns an empty response.
+
+## Country Adapters
+
+Country adapters give the SDK a stable surface for national health networks:
+
+```python
+adapter = krama.adapter("IND")
+
+identity = await adapter.verify_patient_identity(
+    {"abha_number": "12345678901234"}
+)
+transaction_id = await adapter.publish_health_record(bundle)
+consent = await adapter.request_consent("ravi.kumar@abdm", "Care management")
+
+print(adapter.get_coding_system())
+print(adapter.get_drug_formulary())
+print(adapter.get_data_residency_region())
+```
+
+India delegates to Krama ABHA, HIP, and HIU modules. Australia and US adapters
+currently expose accurate metadata and raise `NotImplementedError` for network
+operations until their national integrations are added.
+
 ## What Krama Handles
 
 - `Bundle.type = "document"`
@@ -267,7 +382,7 @@ registry.register(
 Run the checks:
 
 ```bash
-pytest -v
+pytest -v --cov=krama
 ruff check src/ tests/ examples/
 bandit -r src/
 pip-audit
@@ -283,8 +398,8 @@ twine check dist/*
 
 ## Status
 
-Alpha. The API is small and usable, but still expected to evolve as ABDM
-integration coverage expands.
+`1.0.0-alpha`. The SDK now covers the planned core layers, but provider-specific
+integrations and national adapters will keep evolving before a stable `1.0.0`.
 
 ## Roadmap
 

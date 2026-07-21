@@ -50,3 +50,7 @@ class TemplateNotFoundError(KramaError):
 
 class ProviderUnavailableError(KramaError):
     """Raised when an external provider is unavailable."""
+
+
+class CircuitOpenError(KramaError):
+    """Raised when a circuit breaker rejects a call."""

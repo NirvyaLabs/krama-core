@@ -4,7 +4,9 @@ import httpx
 import pytest
 from pydantic import ValidationError as PydanticValidationError
 
+import krama
 from krama import KramaClient
+from krama.adapters import IndiaAdapter
 from krama.abha.client import ABHAClient
 from krama.abha.schemas import ABHAProfile, normalize_aadhaar, normalize_mobile
 from krama.auth import ABDMTokenManager
@@ -224,6 +226,14 @@ def test_krama_client_exposes_abha_and_closes_cleanly():
         assert client.abha is not None
         assert client.hip is not None
         assert client.hiu is not None
+        assert isinstance(client.adapter("IND"), IndiaAdapter)
+        assert client.gateway_health is not None
+        assert client.whatsapp is None
+        assert client.ai is None
         assert client.config.client_secret.get_secret_value() == "secret"
     finally:
         run(client.close())
+
+
+def test_package_version_is_alpha():
+    assert krama.__version__ == "1.0.0a1"

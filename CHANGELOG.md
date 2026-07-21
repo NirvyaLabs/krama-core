@@ -5,6 +5,31 @@ All notable changes to Krama Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-alpha] - 2026-07-21
+
+### Added
+
+- Gateway resilience package with exponential retry, circuit breaker state
+  machine, and health checks
+- Retry behavior limited to timeout and 5xx failures; 4xx gateway responses are
+  never retried
+- WhatsApp package with provider abstraction, AiSensy, Gupshup, and Meta Cloud
+  API adapters
+- WhatsApp outbound sender, provider-neutral inbound webhook normalization, and
+  named template validation/rendering with `{{placeholders}}`
+- AI package with LLM provider abstraction, Gemini and Groq adapters, priority
+  router failover, SOAP improvement suggestions, encounter summaries, ICD-10
+  suggestions, drug interaction checks, and urgency triage
+- Safety disclaimer embedded in AI clinical outputs and result models
+- Country adapter package with India ABDM adapter plus Australia and US metadata
+  stubs
+- `KramaClient.adapter(country="IND")`, `KramaClient.gateway_health`, optional
+  `KramaClient.whatsapp`, and optional `KramaClient.ai`
+- Optional extras: `krama-core[ai]` and `krama-core[whatsapp]`
+- Tests for retry behavior, circuit breaker transitions, health checks,
+  WhatsApp provider parsing/sending, template rendering, AI router failover,
+  clinical AI helpers, and country adapter selection/delegation
+
 ## [0.5.0] - 2026-07-21
 
 ### Added
