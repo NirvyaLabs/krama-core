@@ -5,10 +5,17 @@ from __future__ import annotations
 from pydantic import SecretStr
 
 from krama.abha import ABHAClient
-from krama.adapters import AustraliaAdapter, CountryAdapter, IndiaAdapter, USAdapter
+from krama.adapters import (
+    AustraliaAdapter,
+    CountryAdapter,
+    IndiaAdapter,
+    UKAdapter,
+    USAdapter,
+)
 from krama.ai import AIAssistant
 from krama.ai.providers.router import LLMRouter
 from krama.auth import ABDMTokenManager
+from krama.compliance import ComplianceEngine
 from krama.config import KramaConfig
 from krama.exceptions import ConfigurationError
 from krama.gateway import GatewayHealthClient
@@ -60,6 +67,7 @@ class KramaClient:
         self.hip = HIPClient(self.http)
         self.hiu = HIUClient(self.http)
         self.templates = TemplateRegistry()
+        self.compliance = ComplianceEngine()
         self.gateway_health = GatewayHealthClient(self.http)
         self.whatsapp = _build_whatsapp(whatsapp_provider)
         self.ai = _build_ai(ai_router)
@@ -72,6 +80,8 @@ class KramaClient:
             return AustraliaAdapter()
         if code in {"USA", "US", "UNITED_STATES", "UNITED STATES"}:
             return USAdapter()
+        if code in {"GBR", "GB", "UK", "UNITED_KINGDOM", "UNITED KINGDOM"}:
+            return UKAdapter()
         raise ConfigurationError(f"Unsupported country adapter: {country}")
 
     async def close(self) -> None:

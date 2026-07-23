@@ -90,6 +90,9 @@ class IndiaAdapter(CountryAdapter):
     def get_data_residency_region(self) -> str:
         return "ap-south-1"
 
+    def get_supported_patient_identifiers(self) -> list[str]:
+        return ["india_abha", "india_abha_address", "local_mrn"]
+
 
 def _can_call_with_bundle_only(func: Any) -> bool:
     parameters = [

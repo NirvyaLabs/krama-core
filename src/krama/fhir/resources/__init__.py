@@ -5,6 +5,7 @@ from krama.fhir.resources.composition import FHIRComposition
 from krama.fhir.resources.condition import FHIRCondition
 from krama.fhir.resources.diagnostic_report import FHIRDiagnosticReport
 from krama.fhir.resources.encounter import FHIREncounter
+from krama.fhir.resources.identifiers import PatientIdentifier, PatientIdentifierType
 from krama.fhir.resources.medication_request import FHIRMedicationRequest
 from krama.fhir.resources.observation import FHIRObservation
 from krama.fhir.resources.organization import FHIROrganization
@@ -24,4 +25,6 @@ __all__ = [
     "FHIRPatient",
     "FHIRPractitioner",
     "FHIRProcedure",
+    "PatientIdentifier",
+    "PatientIdentifierType",
 ]

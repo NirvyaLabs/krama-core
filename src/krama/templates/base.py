@@ -63,6 +63,8 @@ class ClinicalTemplate(BaseModel):
     vitals: list[str] = Field(default_factory=list)
     coding_system: str = Field(min_length=1)
     prescription_type: str = Field(min_length=1)
+    jurisdiction: str = "GLOBAL"
+    metadata: dict[str, str | list[str]] = Field(default_factory=dict)
 
     @field_validator("domain", "encounter_type", "coding_system", "prescription_type")
     @classmethod
@@ -73,6 +75,11 @@ class ClinicalTemplate(BaseModel):
     @classmethod
     def normalize_vitals(cls, value: list[str]) -> list[str]:
         return [item.strip().lower() for item in value]
+
+    @field_validator("jurisdiction")
+    @classmethod
+    def normalize_jurisdiction(cls, value: str) -> str:
+        return value.strip().upper() or "GLOBAL"
 
     @model_validator(mode="after")
     def validate_unique_sections(self) -> "ClinicalTemplate":

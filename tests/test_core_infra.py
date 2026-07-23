@@ -227,6 +227,7 @@ def test_krama_client_exposes_abha_and_closes_cleanly():
         assert client.hip is not None
         assert client.hiu is not None
         assert isinstance(client.adapter("IND"), IndiaAdapter)
+        assert client.compliance is not None
         assert client.gateway_health is not None
         assert client.whatsapp is None
         assert client.ai is None
@@ -236,4 +237,4 @@ def test_krama_client_exposes_abha_and_closes_cleanly():
 
 
 def test_package_version_is_alpha():
-    assert krama.__version__ == "1.0.0a1"
+    assert krama.__version__ == "1.0.0a3"

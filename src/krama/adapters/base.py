@@ -64,3 +64,8 @@ class CountryAdapter(ABC):
     @abstractmethod
     def get_data_residency_region(self) -> str:
         """Return default cloud data residency region."""
+
+    def get_supported_patient_identifiers(self) -> list[str]:
+        """Return preferred patient identifier types for this country."""
+
+        return []

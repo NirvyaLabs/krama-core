@@ -5,6 +5,44 @@ All notable changes to Krama Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-alpha.3] - 2026-07-23
+
+### Added
+
+- Universal adaptive clinical template builder for country-neutral encounter
+  workflows
+- `UniversalTemplateContext` and `create_universal_template()` helpers
+- `TemplateRegistry.universal(country)` convenience method
+- Compliance engine with country policy metadata, blockers, warnings, source
+  URLs, and a legal/governance disclaimer
+- Compliance rule packs for India, Australia, US, UK, and global fallback
+- `KramaClient.compliance` facade for workflow checks
+- Tests for adaptive template country defaults, custom country contexts,
+  compliance blockers, warnings, minimum-necessary behavior, data residency, and
+  country alias handling
+- Global adaptability/security matrix tests proving every built-in clinical
+  domain template can be paired with every major country compliance policy
+- Unsupported country identifier blocking and encryption-required checks across
+  India, Australia, US, and UK
+- README architecture update for country identifiers, domain templates, and
+  compliance guardrails
+- Dependency upper bounds for `httpx`, `pydantic`, and `pydantic-settings` to
+  avoid prerelease/dev major-version installs
+
+## [1.0.0-alpha.2] - 2026-07-23
+
+### Added
+
+- Country-aware `PatientIdentifier` model for FHIR Patient resources
+- Backward-compatible `FHIRPatient(abha_id=...)` support plus global
+  `FHIRPatient(identifiers=[...])` support
+- Identifier helpers for India ABHA, Australia IHI/MRN, US MRN/MBI, UK NHS
+  Number/MRN, and custom FHIR identifier systems
+- Assigner-scoped local MRN URN generation to avoid collisions across hospitals
+- UK adapter metadata stub with NHS identifier preferences, UK GDPR/Data
+  Protection Act compliance metadata, and `eu-west-2` residency
+- `get_supported_patient_identifiers()` metadata on country adapters
+
 ## [1.0.0-alpha] - 2026-07-21
 
 ### Added

@@ -33,3 +33,6 @@ class AustraliaAdapter(CountryAdapter):
 
     def get_data_residency_region(self) -> str:
         return "ap-southeast-2"
+
+    def get_supported_patient_identifiers(self) -> list[str]:
+        return ["australia_ihi", "australia_mrn", "australia_medicare"]

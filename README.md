@@ -1,14 +1,28 @@
 # Krama Core
 
-> Python-first ABDM/FHIR bundle generation for Indian healthcare products.
+> Python-first FHIR, compliance, and healthcare integration toolkit for
+> country-adaptive clinical products.
 
 **Built by [Nirvya Labs](https://github.com/NirvyaLabs).**
 
-Krama Core helps developers build secure healthcare integrations: ABDM-compliant
-FHIR R4 bundles, HIP/HIU flows, encryption, clinical templates, gateway
-resilience, WhatsApp messaging, AI-assisted clinical workflows, and country
-adapters. It stays Python-first: Pydantic for input validation, plain Python
-dictionaries for FHIR output, and optional extras for provider-specific services.
+Krama Core helps developers build secure healthcare integrations across
+jurisdictions. It includes ABDM-compliant FHIR R4 bundles for India, generic FHIR
+builders, HIP/HIU flows, encryption, clinical templates, gateway resilience,
+WhatsApp messaging, AI-assisted clinical workflows, global patient identifiers,
+and country-aware compliance guardrails.
+
+The architecture is intentionally layered:
+
+- Clinical domains define **what care is documented**: general medicine,
+  dentistry, ophthalmology, pediatrics, psychiatry, surgery, Ayurveda, and more.
+- Country adapters define **how that care must identify, protect, code, and
+  exchange data**: ABHA in India, IHI/MRN in Australia, MRN/MBI in the US, NHS
+  Number/MRN in the UK, and custom/local identifiers elsewhere.
+- Compliance policies define **what must be checked before data is processed**:
+  purpose, consent or lawful basis, encryption, residency, auditability, and
+  minimum-necessary data sharing.
+
+This keeps Krama India-ready without making it India-only.
 
 [![CI](https://github.com/NirvyaLabs/krama-core/actions/workflows/ci.yml/badge.svg)](https://github.com/NirvyaLabs/krama-core/actions/workflows/ci.yml)
 [![PyPI version](https://badge.fury.io/py/krama-core.svg)](https://pypi.org/project/krama-core/)
@@ -37,6 +51,8 @@ pip install -e ".[dev]"
 ```
 
 ## Quick Start
+
+### India ABDM Bundle
 
 ```python
 import json
@@ -75,6 +91,54 @@ bundle = create_op_consult_bundle(
 print(json.dumps(bundle, indent=2))
 ```
 
+### Global Patient Identity
+
+```python
+from krama.fhir.resources import FHIRPatient, PatientIdentifier
+
+australia_patient = FHIRPatient(
+    identifiers=[
+        PatientIdentifier.australia_ihi("8003608166690503"),
+        PatientIdentifier.australia_mrn("MRN-123", assigner="Royal Melbourne"),
+    ],
+    name="Amelia Brown",
+    gender="female",
+    birth_date="1988-04-12",
+)
+
+us_patient = FHIRPatient(
+    identifiers=[
+        PatientIdentifier.us_mrn("DENT-456", assigner="Smile Dental Boston"),
+    ],
+    name="Jordan Smith",
+    gender="unknown",
+    birth_date="1975-09-20",
+)
+```
+
+### Country Compliance Check
+
+```python
+from krama.compliance import ComplianceContext, ComplianceEngine
+
+result = ComplianceEngine().evaluate(
+    ComplianceContext(
+        country="AUS",
+        purpose="Dental review",
+        patient_identifiers=["australia_ihi"],
+        consent_present=True,
+        encrypted=True,
+        data_residency_region="ap-southeast-2",
+        requested_fields=["diagnosis", "medications"],
+        necessary_fields=["diagnosis", "medications"],
+        actor_id="dentist-1",
+        audit_event_id="audit-1",
+    )
+)
+
+assert result.passed
+```
+
 ## Supported Bundles
 
 Krama Core supports three ABDM care contexts through convenience functions:
@@ -92,7 +156,12 @@ builders:
 
 ```python
 from krama.fhir import OPConsultBuilder
-from krama.fhir.resources import FHIROrganization, FHIRPatient, FHIRPractitioner
+from krama.fhir.resources import (
+    FHIROrganization,
+    FHIRPatient,
+    FHIRPractitioner,
+    PatientIdentifier,
+)
 
 bundle = (
     OPConsultBuilder()
@@ -117,6 +186,51 @@ bundle = (
     .build()
 )
 ```
+
+Patients can be identified by ABHA for India, national identifiers where a
+country has one, or local medical record numbers scoped to the assigning
+hospital/system:
+
+```python
+india_patient = FHIRPatient(
+    abha_id="ravi.kumar@abdm",
+    name="Ravi Kumar",
+    gender="male",
+    birth_date="1990-05-15",
+)
+
+australia_patient = FHIRPatient(
+    identifiers=[
+        PatientIdentifier.australia_ihi("8003608166690503"),
+        PatientIdentifier.australia_mrn("MRN-123", assigner="Royal Melbourne"),
+    ],
+    name="Amelia Brown",
+    gender="female",
+    birth_date="1988-04-12",
+)
+
+us_patient = FHIRPatient(
+    identifiers=[
+        PatientIdentifier.us_mrn("MRN-789", assigner="Mass General"),
+    ],
+    name="Jordan Smith",
+    gender="unknown",
+    birth_date="1975-09-20",
+)
+
+uk_patient = FHIRPatient(
+    identifiers=[
+        PatientIdentifier.uk_nhs_number("9000000009"),
+        PatientIdentifier.uk_mrn("MRN-UK-1", assigner="Guy's and St Thomas'"),
+    ],
+    name="Ava Taylor",
+    gender="female",
+    birth_date="1992-11-03",
+)
+```
+
+Local MRNs must include either a FHIR `system` URI or an `assigner`; Krama derives
+a stable local URN from the assigner to avoid collisions across hospitals.
 
 The builder layer currently supports `OPConsultBuilder` and
 `PrescriptionBuilder`, plus reusable FHIR resources for Patient, Practitioner,
@@ -261,6 +375,29 @@ registry.register(
 )
 ```
 
+### Universal Adaptive Template
+
+For global products, Krama includes one robust template that adapts by country.
+It keeps the same clinical shape everywhere while changing identifier guidance,
+coding system, compliance frameworks, and residency metadata per jurisdiction:
+
+```python
+from krama.templates import UniversalTemplateContext, create_universal_template
+
+template = create_universal_template(UniversalTemplateContext(country="AU"))
+
+print(template.jurisdiction)  # AUS
+print(template.coding_system)  # icd10_am
+print(template.metadata["identifier_types"])
+```
+
+Supported defaults are included for India, Australia, US, and UK. Unknown
+countries fall back to a conservative global template using local/custom
+identifiers. The same universal template can be paired with any domain-specific
+template: a dental clinic, ophthalmology clinic, or psychiatry practice can use
+the same country compliance engine without needing separate per-country clinical
+forms.
+
 ## Gateway Resilience
 
 Gateway calls can be wrapped with retry, circuit breaker, and health checks:
@@ -362,11 +499,64 @@ consent = await adapter.request_consent("ravi.kumar@abdm", "Care management")
 print(adapter.get_coding_system())
 print(adapter.get_drug_formulary())
 print(adapter.get_data_residency_region())
+print(adapter.get_supported_patient_identifiers())
 ```
 
-India delegates to Krama ABHA, HIP, and HIU modules. Australia and US adapters
-currently expose accurate metadata and raise `NotImplementedError` for network
-operations until their national integrations are added.
+India delegates to Krama ABHA, HIP, and HIU modules. Australia, UK, and US
+adapters currently expose metadata and identifier preferences, and raise
+`NotImplementedError` for network operations until their national integrations
+are added.
+
+Supported identifier preferences:
+
+| Country | Preferred patient identifiers | Coding | Residency |
+| --- | --- | --- | --- |
+| India | ABHA, ABHA address, local MRN | ICD-10 | `ap-south-1` |
+| Australia | IHI, local MRN, Medicare | ICD-10-AM | `ap-southeast-2` |
+| US | MRN, MBI, local MRN | ICD-10-CM | `us-east-1` |
+| UK | NHS Number, local MRN | ICD-10 | `eu-west-2` |
+
+This country-adapter layer is where Krama will grow toward country-specific
+healthcare rules: coding systems, formularies, consent laws, data residency,
+identity verification, and clinical/network compliance guidance.
+
+## Compliance Engine
+
+Krama includes a conservative compliance guardrail engine. It does not replace
+legal review, but it gives product teams a common way to block unsafe workflows
+and surface warnings before records are signed, shared, published, or requested:
+
+```python
+from krama.compliance import ComplianceContext
+
+result = krama.compliance.evaluate(
+    ComplianceContext(
+        country="US",
+        purpose="Referral",
+        patient_identifiers=["us_mrn"],
+        lawful_basis="treatment",
+        encrypted=True,
+        requested_fields=["diagnosis", "medications"],
+        necessary_fields=["diagnosis", "medications"],
+        actor_id="clinician-1",
+        audit_event_id="audit-1",
+    )
+)
+
+if not result.passed:
+    print(result.blockers)
+```
+
+The first rule packs cover India, Australia, US, and UK. They check for patient
+identity, supported identifier type, purpose of use, consent or lawful basis,
+encryption, data residency, minimum-necessary data sharing, and auditability.
+This creates the platform foundation for deeper country healthcare guideline
+systems: each country can add its own rules without breaking the universal
+template.
+
+The compliance engine is a software guardrail, not legal advice. Production
+teams should still complete legal, security, privacy, and clinical governance
+review for each deployment.
 
 ## What Krama Handles
 
@@ -374,6 +564,9 @@ operations until their national integrations are added.
 - `Composition` as the first bundle entry
 - Internal `urn:uuid:` references between resources
 - Patient, practitioner, organization, encounter, diagnosis, and medication resources
+- Country-aware patient identifiers
+- Universal adaptive clinical templates
+- Country-aware compliance blockers and warnings
 - SNOMED CT coding fields for diagnoses and medications
 - Pydantic validation for required inputs and FHIR gender values
 

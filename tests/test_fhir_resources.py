@@ -12,6 +12,8 @@ from krama.fhir.resources import (
     FHIRPatient,
     FHIRPractitioner,
     FHIRProcedure,
+    PatientIdentifier,
+    PatientIdentifierType,
 )
 from krama.fhir.resources.base import bundle_entry, coding, make_urn, reference
 
@@ -43,6 +45,69 @@ def test_patient_resource_uses_abha_identifier_and_normalizes_gender():
     assert patient["id"] == "patient-1"
     assert patient["identifier"][0]["value"] == "ravi.kumar@abdm"
     assert patient["gender"] == "male"
+
+
+def test_patient_resource_supports_global_identifier_list_without_abha():
+    patient = FHIRPatient(
+        id="patient-au-1",
+        identifiers=[
+            PatientIdentifier.australia_ihi("8003608166690503"),
+            PatientIdentifier.australia_mrn("MRN-123", assigner="Royal Melbourne"),
+        ],
+        name="Amelia Brown",
+        gender="female",
+        birth_date="1988-04-12",
+    ).to_fhir()
+
+    assert patient["identifier"][0] == {
+        "system": "http://ns.electronichealth.net.au/id/hi/ihi/1.0",
+        "value": "8003608166690503",
+    }
+    assert patient["identifier"][1]["system"] == (
+        "urn:krama:identifier:au:mrn:royal-melbourne"
+    )
+    assert patient["identifier"][1]["assigner"] == {"display": "Royal Melbourne"}
+
+
+def test_patient_identifier_supports_india_us_uk_and_custom_systems():
+    identifiers = [
+        PatientIdentifier.india_abha("12-3456-7890-1234"),
+        PatientIdentifier.us_mrn("MRN-9", assigner="Mass General"),
+        PatientIdentifier(value="1EG4-TE5-MK73", type=PatientIdentifierType.US_MBI),
+        PatientIdentifier.uk_nhs_number("9000000009"),
+        PatientIdentifier.uk_mrn("MRN-UK-1", assigner="Guy's and St Thomas'"),
+        PatientIdentifier(
+            value="LOCAL-1",
+            type=PatientIdentifierType.CUSTOM,
+            system="https://hospital.example/fhir/Id/patient",
+        ),
+    ]
+
+    systems = [identifier.to_fhir()["system"] for identifier in identifiers]
+
+    assert systems[0] == "https://healthid.abdm.gov.in"
+    assert systems[1] == "urn:krama:identifier:us:mrn:mass-general"
+    assert systems[2] == "http://hl7.org/fhir/sid/us-mbi"
+    assert systems[3] == "https://fhir.nhs.uk/Id/nhs-number"
+    assert systems[4] == "urn:krama:identifier:uk:mrn:guy-s-and-st-thomas"
+    assert systems[5] == "https://hospital.example/fhir/Id/patient"
+
+
+def test_patient_identifier_requires_system_or_assigner_for_local_ids():
+    with pytest.raises(ValueError, match="local MRN"):
+        PatientIdentifier(value="MRN-1", type=PatientIdentifierType.LOCAL_MRN)
+
+    with pytest.raises(ValueError, match="custom"):
+        PatientIdentifier(value="patient-1")
+
+
+def test_patient_requires_at_least_one_identifier():
+    with pytest.raises(ValueError, match="abha_id or identifiers"):
+        FHIRPatient(
+            name="No Identifier",
+            gender="unknown",
+            birth_date="1990-01-01",
+        )
 
 
 def test_patient_rejects_invalid_gender():

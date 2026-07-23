@@ -6,6 +6,7 @@ from collections.abc import Iterable
 
 from krama.exceptions import TemplateNotFoundError
 from krama.templates.base import ClinicalTemplate
+from krama.templates.universal import UniversalTemplateContext, create_universal_template
 from krama.templates.validators import TemplateValidator
 
 
@@ -43,6 +44,11 @@ class TemplateRegistry:
             [template for template in templates if template.domain == normalized],
             key=lambda item: item.encounter_type,
         )
+
+    def universal(self, country: str = "GLOBAL") -> ClinicalTemplate:
+        """Return the universal adaptive template for a country."""
+
+        return create_universal_template(UniversalTemplateContext(country=country))
 
     def _load_builtin_templates(self) -> None:
         from krama.templates.domains import BUILTIN_TEMPLATE_MODULES

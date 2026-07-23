@@ -7,14 +7,23 @@ from krama.adapters import (
     CountryAdapter,
     IndiaAdapter,
     PatientIdentity,
+    UKAdapter,
     USAdapter,
 )
 from krama.ai import AIAssistant
 from krama.client import KramaClient
+from krama.compliance import ComplianceContext, ComplianceEngine, ComplianceResult
+from krama.fhir import PatientIdentifier, PatientIdentifierType
 from krama.gateway import CircuitBreaker, CircuitState, GatewayHealthClient, RetryConfig
-from krama.templates import ClinicalTemplate, TemplateRegistry, TemplateSection
+from krama.templates import (
+    ClinicalTemplate,
+    TemplateRegistry,
+    TemplateSection,
+    UniversalTemplateContext,
+    create_universal_template,
+)
 
-__version__ = "1.0.0a1"
+__version__ = "1.0.0a3"
 
 __all__ = [
     "AIAssistant",
@@ -22,6 +31,9 @@ __all__ = [
     "CircuitBreaker",
     "CircuitState",
     "ClinicalTemplate",
+    "ComplianceContext",
+    "ComplianceEngine",
+    "ComplianceResult",
     "ComplianceRules",
     "Consent",
     "CountryAdapter",
@@ -29,9 +41,14 @@ __all__ = [
     "IndiaAdapter",
     "KramaClient",
     "PatientIdentity",
+    "PatientIdentifier",
+    "PatientIdentifierType",
     "RetryConfig",
     "TemplateRegistry",
     "TemplateSection",
+    "UKAdapter",
     "USAdapter",
+    "UniversalTemplateContext",
     "__version__",
+    "create_universal_template",
 ]

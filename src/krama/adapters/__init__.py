@@ -8,6 +8,7 @@ from krama.adapters.base import (
     PatientIdentity,
 )
 from krama.adapters.india import IndiaAdapter
+from krama.adapters.uk import UKAdapter
 from krama.adapters.us import USAdapter
 
 __all__ = [
@@ -17,5 +18,6 @@ __all__ = [
     "CountryAdapter",
     "IndiaAdapter",
     "PatientIdentity",
+    "UKAdapter",
     "USAdapter",
 ]
