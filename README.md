@@ -602,6 +602,29 @@ provider errors or returns an empty response.
 Krama Core can be used from any Python framework or from standalone async
 scripts.
 
+Flask:
+
+```python
+from flask import Flask, jsonify
+from krama.fhir import create_op_consult_bundle
+from krama.fhir.bundles import DiagnosisInfo, OrganizationInfo, PatientInfo, PractitionerInfo
+
+app = Flask(__name__)
+
+@app.route("/api/op-consult")
+def op_consult():
+    bundle = create_op_consult_bundle(
+        patient=PatientInfo(name="Ravi Kumar", abha_address="ravi.kumar@abdm", gender="male", date_of_birth="1990-05-15"),
+        practitioner=PractitionerInfo(name="Dr. Priya Sharma", identifier="DOC-AP-12345"),
+        organization=OrganizationInfo(name="District Hospital Guntur", hfr_id="IN0410000123"),
+        diagnosis=DiagnosisInfo(description="Essential hypertension", snomed_code="59621000"),
+        encounter_date="2026-07-30",
+    )
+    return jsonify(bundle)
+```
+
+See [examples/flask_app.py](examples/flask_app.py) for a complete runnable Flask example.
+
 FastAPI:
 
 ```python
