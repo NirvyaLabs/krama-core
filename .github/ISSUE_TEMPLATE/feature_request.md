@@ -1,39 +1,69 @@
 ---
-name: Feature Request
-about: Suggest a new feature or bundle type
+name: Feature request
+about: Suggest a new SDK feature, clinical template, country adapter, or guide
 title: "[FEATURE] "
 labels: enhancement
-assignees: ''
+assignees: ""
 ---
 
 ## Summary
 
-One-line description of the feature.
+Describe the feature in one or two sentences.
 
-## ABDM Use Case
+## Problem
 
-Describe the ABDM integration scenario this feature addresses.
-Which ABDM milestone (M1/M2/M3) does it relate to?
-Which FHIR profile or care context does it involve?
+What developer, clinical, interoperability, or compliance problem does this
+solve?
 
-## Proposed Solution
+## Area
 
-How you think this should work. Include example API usage if possible:
+Select the area that best matches the request:
+
+- [ ] FHIR bundles or validators
+- [ ] Patient identifiers
+- [ ] Clinical templates
+- [ ] Compliance engine
+- [ ] Crypto / encryption
+- [ ] ABDM / ABHA
+- [ ] HIP
+- [ ] HIU
+- [ ] Gateway resilience
+- [ ] WhatsApp
+- [ ] AI helpers
+- [ ] Country adapters
+- [ ] Documentation
+- [ ] Examples
+- [ ] Translations
+- [ ] Other
+
+## Proposed API Or Behavior
+
+If this is a developer-facing feature, show how you imagine it being used.
 
 ```python
-# How a developer would use this feature
-from krama.fhir import create_diagnostic_report_bundle
+from krama import KramaClient
 
-bundle = create_diagnostic_report_bundle(
-    patient=...,
-    lab_results=[...],
-)
+# Example usage here
 ```
+
+## Country Or Compliance Context
+
+If relevant, mention the country, framework, identifier type, or healthcare
+program involved.
+
+Examples:
+
+- India ABDM / DPDP
+- Australia IHI / Privacy Act
+- US HIPAA
+- UK NHS / UK GDPR
+- Global / local hospital workflow
 
 ## Alternatives Considered
 
-Any other approaches you've thought about.
+Describe any other approaches you considered.
 
 ## Additional Context
 
-Links to relevant ABDM docs, FHIR profiles, or related issues.
+Add links to FHIR profiles, public standards, clinical workflow references, or
+related issues if useful.

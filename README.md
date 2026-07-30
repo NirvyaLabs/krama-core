@@ -50,6 +50,15 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
+## Learning The Codebase
+
+If you are new to Krama Core, start with the learning guide:
+
+[docs/KRAMA_LEARNING_GUIDE.md](docs/KRAMA_LEARNING_GUIDE.md)
+
+It explains the architecture, what each module does, how FHIR, crypto, HIP/HIU,
+templates, adapters, and compliance connect, and which files to read first.
+
 ## Quick Start
 
 ### India ABDM Bundle

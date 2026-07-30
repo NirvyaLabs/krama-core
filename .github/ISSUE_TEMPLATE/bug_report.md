@@ -1,41 +1,75 @@
 ---
-name: Bug Report
-about: Report a bug in Krama Core
+name: Bug report
+about: Report incorrect behavior, validation failures, or integration problems
 title: "[BUG] "
 labels: bug
-assignees: ''
+assignees: ""
 ---
 
-## Describe the Bug
+## Summary
 
-A clear description of what the bug is.
+Describe the bug clearly in one or two sentences.
 
-## To Reproduce
+## Affected Area
 
-Steps to reproduce the behavior:
+Select the area that best matches the issue:
+
+- [ ] FHIR bundles or resources
+- [ ] Patient identifiers
+- [ ] Clinical templates
+- [ ] Compliance engine
+- [ ] Crypto / encryption
+- [ ] ABDM / ABHA
+- [ ] HIP
+- [ ] HIU
+- [ ] Gateway retry / circuit breaker
+- [ ] WhatsApp
+- [ ] AI helpers
+- [ ] Country adapters
+- [ ] Documentation
+- [ ] Other
+
+## Reproduction
+
+Please provide the smallest code sample that reproduces the bug.
+
+```python
+from krama import KramaClient
+
+# Minimal reproduction here
+```
+
+Steps:
 
 1. Install version `...`
-2. Run this code:
-```python
-# minimal example here
-```
-3. See error
+2. Run the code above
+3. Observe the error
 
 ## Expected Behavior
 
-What you expected to happen.
+What should have happened?
 
 ## Actual Behavior
 
-What actually happened. Include the full error traceback if applicable.
+What happened instead? Include the full traceback if available.
+
+```text
+Paste traceback here
+```
 
 ## Environment
 
-- **OS:** (e.g., Ubuntu 22.04, macOS 14, Windows 11)
-- **Python version:** (e.g., 3.12.1)
-- **Krama Core version:** (e.g., 0.1.0)
-- **Pydantic version:** (e.g., 2.7.0)
+- OS:
+- Python version:
+- Krama Core version:
+- Installation method: `pip`, editable install, source checkout, other
+
+## Safety Check
+
+- [ ] This report does not include real patient data.
+- [ ] This report does not include API keys, tokens, or credentials.
 
 ## Additional Context
 
-Any other information that might help diagnose the issue.
+Add screenshots, logs, FHIR snippets, ABDM callback examples, or links to
+relevant documentation if helpful. Use synthetic data only.

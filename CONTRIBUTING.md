@@ -1,85 +1,178 @@
 # Contributing to Krama Core
 
-Thank you for your interest in contributing! Krama Core is maintained by
-[Nirvya Labs](https://github.com/NirvyaLabs) and we welcome contributions
-from anyone who wants to improve ABDM integration tooling.
+Thank you for helping improve Krama Core. This project is maintained by
+[Nirvya Labs](https://github.com/NirvyaLabs) and welcomes contributions from
+developers, clinicians, implementers, and documentation writers.
 
-## Getting Started
+Krama Core is a Python SDK for secure healthcare interoperability. It includes
+FHIR R4 builders, ABDM workflows, country-aware patient identifiers, compliance
+guardrails, encryption, clinical templates, gateway resilience, WhatsApp
+integrations, and AI-assisted clinical workflow helpers.
+
+## Development Setup
+
+Fork and clone the repository:
 
 ```bash
-# Fork and clone
-git clone git@github.com:YOUR_USERNAME/Krama-Core.git
-cd Krama-Core
+git clone git@github.com:YOUR_USERNAME/krama-core.git
+cd krama-core
+```
 
-# Set up environment
+Create a virtual environment:
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -e ".[dev]"
+```
 
-# Verify
+Install Krama Core in editable mode with development tools:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Run the test suite:
+
+```bash
 pytest -v
+pytest -v --cov=krama
+```
+
+Run linting:
+
+```bash
 ruff check src/ tests/ examples/
 ```
 
-## Development Workflow
+Run security checks before larger PRs:
 
-1. Create a branch from `main`: `git checkout -b feat/your-feature`
-2. Make changes
-3. Run checks before committing:
-   ```bash
-   pytest -v
-   ruff check src/ tests/ examples/
-   ruff format src/ tests/ examples/
-   ```
-4. Use conventional commit messages:
-   - `feat:` new features
-   - `fix:` bug fixes
-   - `docs:` documentation
-   - `test:` test changes
-   - `chore:` maintenance
-5. Push and open a Pull Request against `main`
+```bash
+bandit -r src/ -ll
+pip-audit
+```
 
-## What Can I Contribute?
+Build and validate package metadata:
 
-**New bundle types** — We need Diagnostic Report, Immunization Record,
-Wellness Record, and Health Document Record bundles.
+```bash
+python -m build
+twine check dist/*
+```
 
-**Tests** — Edge cases, FHIR validation, integration tests with the ABDM
-sandbox.
+## Branch Workflow
 
-**Documentation** — Docstrings, usage guides, translations (Hindi and Telugu
-especially welcome).
+Create a focused branch from `main`:
 
-Look for issues tagged `good first issue` for scoped starter tasks.
+```bash
+git checkout main
+git pull
+git checkout -b feat/short-description
+```
 
-## Code Style
+Use a branch name that reflects the change:
 
-- **ruff** for linting and formatting (line length: 88)
-- Type hints encouraged
-- All public functions need docstrings
-- Keep dependencies minimal — every new one needs justification
+- `feat/fhir-validator`
+- `fix/patient-identifier-validation`
+- `docs/template-guide`
+- `test/crypto-edge-cases`
 
-## Testing
+## Commit Style
 
-- Every new feature must include tests
-- Tests live in `tests/` and mirror source structure
-- Aim for descriptive names: `test_prescription_bundle_links_medication_to_patient`
+Use concise conventional commits:
+
+- `feat:` new behavior
+- `fix:` bug fixes
+- `docs:` documentation-only changes
+- `test:` tests only
+- `refactor:` internal cleanup without behavior changes
+- `chore:` maintenance
+
+Examples:
+
+```text
+feat: add FHIR patient identifier validator
+docs: explain compliance engine flow
+test: cover AES-GCM tamper detection
+```
 
 ## Pull Request Guidelines
 
-- One feature or fix per PR
-- Clear description of what changed and why
-- Reference related issues
-- All CI checks must pass before merge
+Before opening a pull request:
 
-## Reporting Issues
+- Keep the PR focused on one feature, fix, or documentation area.
+- Add or update tests for behavior changes.
+- Update documentation when public APIs change.
+- Run `pytest -v`, `ruff check src/ tests/ examples/`, and relevant security
+  checks.
+- Make sure no real patient data, tokens, credentials, or sandbox secrets are
+  committed.
 
-- Use the provided issue templates
-- Include Python version, OS, and Krama Core version
-- For bugs: include a minimal reproducible example
-- For features: describe the ABDM use case it addresses
+Every PR should include:
 
-## Code of Conduct
+- What changed.
+- Why the change is needed.
+- How it was tested.
+- Any remaining limitations or follow-up work.
+
+## Healthcare And Security Expectations
+
+Krama handles healthcare-adjacent data structures, so contributions must be
+careful by default.
+
+Do:
+
+- Use Pydantic models for structured input and validation.
+- Keep FHIR output deterministic and JSON-serializable.
+- Avoid real patient data in tests, examples, docs, and fixtures.
+- Mock network calls in tests.
+- Add failure-path tests for security-sensitive behavior.
+- Treat AI output as suggestions requiring clinician review.
+
+Do not:
+
+- Hardcode API keys, bearer tokens, patient identifiers, or credentials.
+- Add network calls to unit tests.
+- Swallow cryptography or compliance errors silently.
+- Present compliance checks as legal advice.
+- Present AI suggestions as diagnosis, prescription, or clinical authority.
+
+## Areas That Need Help
+
+Good starter areas include:
+
+- FHIR validators for common resource and bundle errors.
+- New specialty templates such as physiotherapy, cardiology, radiology, and
+  nutrition.
+- More test coverage for edge cases and failure paths.
+- Flask and FastAPI example apps.
+- Documentation improvements and diagrams.
+- Telugu, Hindi, and other Indian language translations.
+- Country adapter metadata and policy expansion.
+
+Look for issues tagged `good first issue`.
+
+## Reporting Bugs
+
+Use the bug report template and include:
+
+- Krama Core version.
+- Python version.
+- Operating system.
+- Minimal code to reproduce the issue.
+- Full traceback if there is an exception.
+- Whether the bug affects FHIR output, crypto, compliance, templates, gateway
+  calls, AI, WhatsApp, HIP, or HIU.
+
+## Requesting Features
+
+Use the feature request template and include:
+
+- The healthcare workflow or developer problem.
+- The country or compliance context, if relevant.
+- The FHIR resources or clinical templates involved.
+- Example API usage if you have a preferred design.
+
+## Code Of Conduct
 
 This project follows the [Contributor Covenant](CODE_OF_CONDUCT.md). By
-participating, you agree to uphold a welcoming and inclusive environment.
+participating, you agree to help keep Krama Core welcoming, respectful, and
+useful for the healthcare developer community.
