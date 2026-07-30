@@ -13,7 +13,7 @@ from krama.adapters import (
 from krama.ai import AIAssistant
 from krama.client import KramaClient
 from krama.compliance import ComplianceContext, ComplianceEngine, ComplianceResult
-from krama.fhir import PatientIdentifier, PatientIdentifierType
+from krama.fhir import FHIRFacade, PatientIdentifier, PatientIdentifierType
 from krama.gateway import CircuitBreaker, CircuitState, GatewayHealthClient, RetryConfig
 from krama.templates import (
     ClinicalTemplate,
@@ -23,7 +23,7 @@ from krama.templates import (
     create_universal_template,
 )
 
-__version__ = "1.0.0a3"
+__version__ = "1.0.0a4"
 
 __all__ = [
     "AIAssistant",
@@ -37,6 +37,7 @@ __all__ = [
     "ComplianceRules",
     "Consent",
     "CountryAdapter",
+    "FHIRFacade",
     "GatewayHealthClient",
     "IndiaAdapter",
     "KramaClient",

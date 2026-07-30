@@ -5,6 +5,18 @@ All notable changes to Krama Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-alpha.4] - 2026-07-30
+
+### Added
+
+- `FHIRFacade` with `KramaClient.fhir.op_consult()` and
+  `KramaClient.fhir.prescription()` convenience builder entry points
+- Short-form `KramaClient.hip.publish(bundle)` support that can infer ABHA,
+  care-context reference, and display text from a valid FHIR document bundle
+- Launch-ready README positioning with accurate alpha install instructions and
+  public SDK facade examples
+- Tests covering the new client FHIR facade and inferred HIP publish defaults
+
 ## [1.0.0-alpha.3] - 2026-07-23
 
 ### Added

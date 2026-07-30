@@ -58,6 +58,33 @@ def sample_bundle():
     }
 
 
+def sample_bundle_with_patient():
+    return {
+        "resourceType": "Bundle",
+        "type": "document",
+        "identifier": {"value": "visit-2026-07-30"},
+        "entry": [
+            {
+                "resource": {
+                    "resourceType": "Composition",
+                    "title": "OP Consultation Record",
+                }
+            },
+            {
+                "resource": {
+                    "resourceType": "Patient",
+                    "identifier": [
+                        {
+                            "system": "https://healthid.abdm.gov.in",
+                            "value": "ravi.kumar@abdm",
+                        }
+                    ],
+                }
+            },
+        ],
+    }
+
+
 def test_hip_schemas_normalize_abha_and_reject_bad_address():
     assert sample_care_context().patient_abha == "ravi.kumar@abdm"
 
@@ -217,3 +244,26 @@ def test_hip_client_facade_publish_delegates():
 
     assert result.notified is True
     assert http.calls[-1][1] == "/v1/hip/health-information/notify"
+
+
+def test_hip_client_publish_can_infer_defaults_from_bundle():
+    http = FakeHTTP([{}, {"linked": True}, {"notified": True}])
+    client = HIPClient(http)
+
+    result = run(client.publish(sample_bundle_with_patient()))
+
+    assert result.notified is True
+    assert result.patient_abha == "ravi.kumar@abdm"
+    assert result.care_context_reference == "visit-2026-07-30"
+    notify_payload = http.calls[-1][2]["json"]
+    assert notify_payload["care_context_display"] == "OP Consultation Record"
+
+
+def test_hip_client_publish_requires_patient_abha_when_bundle_has_no_abha():
+    http = FakeHTTP()
+    client = HIPClient(http)
+
+    with pytest.raises(FHIRValidationError, match="patient_abha"):
+        run(client.publish(sample_bundle()))
+
+    assert http.calls == []

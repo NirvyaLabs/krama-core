@@ -74,14 +74,14 @@ Clinical input
 ## Installation
 
 ```bash
-pip install krama-core
+pip install --pre krama-core
 ```
 
 Optional integrations:
 
 ```bash
-pip install "krama-core[ai]"
-pip install "krama-core[whatsapp]"
+pip install --pre "krama-core[ai]"
+pip install --pre "krama-core[whatsapp]"
 ```
 
 Requirements:
@@ -138,6 +138,36 @@ bundle = create_op_consult_bundle(
 )
 
 print(json.dumps(bundle, indent=2))
+```
+
+### SDK Facade
+
+For application code, `KramaClient` exposes the core modules from one place:
+
+```python
+from krama import KramaClient
+from krama.fhir.resources import FHIROrganization, FHIRPatient, FHIRPractitioner
+
+krama = KramaClient(client_id="client-id", client_secret="client-secret")
+
+bundle = (
+    krama.fhir.op_consult()
+    .set_patient(
+        FHIRPatient(
+            abha_id="ravi.kumar@abdm",
+            name="Ravi Kumar",
+            gender="male",
+            birth_date="1990-05-15",
+        )
+    )
+    .set_practitioner(FHIRPractitioner(identifier="DOC-12345", name="Dr. Sharma"))
+    .set_organization(FHIROrganization(hfr_id="IN0410000123", name="Nirvya Clinic"))
+    .set_encounter("2026-07-30")
+    .add_chief_complaint("Diabetes follow-up", snomed_code="44054006")
+    .build()
+)
+
+await krama.hip.publish(bundle)
 ```
 
 ### Global Patient Identity
@@ -676,7 +706,7 @@ Good first issues are labeled on the
 
 ## Status
 
-`1.0.0-alpha`. The SDK now covers the planned core layers, but provider-specific
+`1.0.0-alpha.4`. The SDK now covers the planned core layers, but provider-specific
 integrations and national adapters will keep evolving before a stable `1.0.0`.
 
 ## Roadmap

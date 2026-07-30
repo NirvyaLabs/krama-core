@@ -18,6 +18,7 @@ from krama.auth import ABDMTokenManager
 from krama.compliance import ComplianceEngine
 from krama.config import KramaConfig
 from krama.exceptions import ConfigurationError
+from krama.fhir import FHIRFacade
 from krama.gateway import GatewayHealthClient
 from krama.hip import HIPClient
 from krama.hiu import HIUClient
@@ -66,6 +67,7 @@ class KramaClient:
         self.abha = ABHAClient(self.http)
         self.hip = HIPClient(self.http)
         self.hiu = HIUClient(self.http)
+        self.fhir = FHIRFacade()
         self.templates = TemplateRegistry()
         self.compliance = ComplianceEngine()
         self.gateway_health = GatewayHealthClient(self.http)

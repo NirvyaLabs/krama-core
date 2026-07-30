@@ -224,6 +224,7 @@ def test_krama_client_exposes_abha_and_closes_cleanly():
 
     try:
         assert client.abha is not None
+        assert client.fhir.op_consult() is not None
         assert client.hip is not None
         assert client.hiu is not None
         assert isinstance(client.adapter("IND"), IndiaAdapter)
@@ -237,4 +238,4 @@ def test_krama_client_exposes_abha_and_closes_cleanly():
 
 
 def test_package_version_is_alpha():
-    assert krama.__version__ == "1.0.0a3"
+    assert krama.__version__ == "1.0.0a4"
