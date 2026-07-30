@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from krama.fhir.resources.base import FHIRDict, PRACTITIONER_SYSTEM, make_id
+from krama.fhir.resources.base import PRACTITIONER_SYSTEM, FHIRDict, make_id
 
 
 class FHIRPractitioner(BaseModel):

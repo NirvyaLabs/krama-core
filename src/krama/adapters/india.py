@@ -5,7 +5,12 @@ from __future__ import annotations
 import inspect
 from typing import Any
 
-from krama.adapters.base import ComplianceRules, Consent, CountryAdapter, PatientIdentity
+from krama.adapters.base import (
+    ComplianceRules,
+    Consent,
+    CountryAdapter,
+    PatientIdentity,
+)
 from krama.exceptions import ValidationError
 from krama.hiu.schemas import ConsentRequest
 

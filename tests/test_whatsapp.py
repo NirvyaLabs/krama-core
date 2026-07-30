@@ -11,7 +11,11 @@ from krama.whatsapp import (
     WhatsAppTemplateStore,
     WhatsAppWebhookHandler,
 )
-from krama.whatsapp.providers import AiSensyProvider, GupshupProvider, MetaDirectProvider
+from krama.whatsapp.providers import (
+    AiSensyProvider,
+    GupshupProvider,
+    MetaDirectProvider,
+)
 from krama.whatsapp.schemas import MessageType, SendResult
 
 

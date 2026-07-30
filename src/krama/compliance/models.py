@@ -6,7 +6,6 @@ from enum import Enum
 
 from pydantic import BaseModel, Field, field_validator
 
-
 COMPLIANCE_DISCLAIMER = (
     "Compliance checks are implementation guardrails only and do not replace "
     "legal, privacy, security, or clinical governance review."

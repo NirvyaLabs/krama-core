@@ -9,7 +9,6 @@ from typing import ParamSpec, TypeVar
 
 from krama.exceptions import CircuitOpenError
 
-
 P = ParamSpec("P")
 T = TypeVar("T")
 Clock = Callable[[], float]

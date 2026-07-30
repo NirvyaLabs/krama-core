@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from krama.adapters.base import ComplianceRules, Consent, CountryAdapter, PatientIdentity
+from krama.adapters.base import (
+    ComplianceRules,
+    Consent,
+    CountryAdapter,
+    PatientIdentity,
+)
 
 
 class UKAdapter(CountryAdapter):

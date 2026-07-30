@@ -5,7 +5,6 @@ from krama.exceptions import TemplateNotFoundError, ValidationError
 from krama.templates.domains import BUILTIN_TEMPLATE_MODULES
 from krama.templates.validators import TemplateValidator
 
-
 EXPECTED_DOMAINS = {
     "allopathy",
     "dentistry",

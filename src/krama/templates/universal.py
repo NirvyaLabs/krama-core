@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field, field_validator
 
 from krama.templates.base import ClinicalTemplate, TemplateSection
 
-
 COUNTRY_TEMPLATE_DEFAULTS = {
     "IND": {
         "coding_system": "icd10",

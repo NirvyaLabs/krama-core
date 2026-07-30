@@ -11,7 +11,6 @@ import httpx
 from krama.config import KramaConfig
 from krama.exceptions import ABDMGatewayError, KramaError
 
-
 TokenProvider = Callable[[], Awaitable[str]]
 SleepFunc = Callable[[float], Awaitable[None]]
 

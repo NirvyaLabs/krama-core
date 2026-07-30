@@ -2,7 +2,7 @@ import asyncio
 
 import pytest
 
-from krama.ai import AIAssistant, SAFETY_DISCLAIMER
+from krama.ai import SAFETY_DISCLAIMER, AIAssistant
 from krama.ai.drug_checker import DrugChecker, InteractionResult
 from krama.ai.icd_coder import ICDCoder
 from krama.ai.providers.base import LLMProvider

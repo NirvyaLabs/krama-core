@@ -2,13 +2,18 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
 import json
+from datetime import datetime, timezone
 
 import httpx
 
 from krama.whatsapp.providers.base import WhatsAppProvider
-from krama.whatsapp.schemas import InboundMessage, MessageType, SendResult, TemplateMessage
+from krama.whatsapp.schemas import (
+    InboundMessage,
+    MessageType,
+    SendResult,
+    TemplateMessage,
+)
 
 
 class GupshupProvider(WhatsAppProvider):

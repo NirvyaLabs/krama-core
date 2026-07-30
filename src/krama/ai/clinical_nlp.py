@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from krama.ai.providers.router import LLMRouter
 
-
 SAFETY_DISCLAIMER = (
     "AI output is a clinical suggestion only and requires physician review."
 )

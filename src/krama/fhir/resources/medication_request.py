@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from krama.fhir.resources.base import FHIRDict, SNOMED_SYSTEM, coding, make_id, reference
+from krama.fhir.resources.base import (
+    SNOMED_SYSTEM,
+    FHIRDict,
+    coding,
+    make_id,
+    reference,
+)
 
 
 class FHIRMedicationRequest(BaseModel):

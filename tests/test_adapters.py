@@ -2,6 +2,7 @@ import asyncio
 
 import pytest
 
+from krama import KramaClient
 from krama.adapters import (
     AustraliaAdapter,
     IndiaAdapter,
@@ -10,7 +11,6 @@ from krama.adapters import (
     USAdapter,
 )
 from krama.exceptions import ConfigurationError
-from krama import KramaClient
 
 
 def run(coro):

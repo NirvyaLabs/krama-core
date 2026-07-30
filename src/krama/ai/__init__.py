@@ -1,6 +1,6 @@
 """Clinical AI helpers."""
 
-from krama.ai.clinical_nlp import ClinicalNLP, SAFETY_DISCLAIMER
+from krama.ai.clinical_nlp import SAFETY_DISCLAIMER, ClinicalNLP
 from krama.ai.drug_checker import DrugChecker, InteractionResult
 from krama.ai.icd_coder import ICDCoder, ICDSuggestion
 from krama.ai.providers.base import LLMProvider

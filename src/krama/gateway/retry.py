@@ -12,7 +12,6 @@ from pydantic import BaseModel, Field
 
 from krama.exceptions import ABDMGatewayError
 
-
 P = ParamSpec("P")
 T = TypeVar("T")
 SleepFunc = Callable[[float], Awaitable[None]]

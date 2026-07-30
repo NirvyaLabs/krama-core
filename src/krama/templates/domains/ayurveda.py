@@ -2,7 +2,6 @@
 
 from krama.templates.base import ClinicalTemplate, TemplateSection
 
-
 DOSHA_OPTIONS = [
     "vata",
     "pitta",

@@ -6,7 +6,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from krama.fhir.resources.base import FHIRDict, LOINC_SYSTEM, coding, make_id, reference
+from krama.fhir.resources.base import LOINC_SYSTEM, FHIRDict, coding, make_id, reference
 
 
 class FHIRObservation(BaseModel):

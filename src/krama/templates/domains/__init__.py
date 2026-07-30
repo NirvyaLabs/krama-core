@@ -1,17 +1,19 @@
 """Built-in clinical template domains."""
 
-from krama.templates.domains import ayurveda
-from krama.templates.domains import dentistry
-from krama.templates.domains import dermatology
-from krama.templates.domains import ent
-from krama.templates.domains import general_medicine
-from krama.templates.domains import homeopathy
-from krama.templates.domains import ob_gyn
-from krama.templates.domains import ophthalmology
-from krama.templates.domains import orthopedics
-from krama.templates.domains import pediatrics
-from krama.templates.domains import psychiatry
-from krama.templates.domains import surgery
+from krama.templates.domains import (
+    ayurveda,
+    dentistry,
+    dermatology,
+    ent,
+    general_medicine,
+    homeopathy,
+    ob_gyn,
+    ophthalmology,
+    orthopedics,
+    pediatrics,
+    psychiatry,
+    surgery,
+)
 
 BUILTIN_TEMPLATE_MODULES = [
     general_medicine,

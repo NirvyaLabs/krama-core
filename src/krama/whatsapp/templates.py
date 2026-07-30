@@ -8,7 +8,6 @@ from pydantic import BaseModel, Field
 
 from krama.exceptions import TemplateNotFoundError, ValidationError
 
-
 _PLACEHOLDER_RE = re.compile(r"{{\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*}}")
 
 

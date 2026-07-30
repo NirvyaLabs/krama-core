@@ -9,7 +9,6 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
-
 FHIRResource = dict[str, Any]
 
 VALID_GENDERS = {"male", "female", "other", "unknown"}

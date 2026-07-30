@@ -6,7 +6,10 @@ from collections.abc import Iterable
 
 from krama.exceptions import TemplateNotFoundError
 from krama.templates.base import ClinicalTemplate
-from krama.templates.universal import UniversalTemplateContext, create_universal_template
+from krama.templates.universal import (
+    UniversalTemplateContext,
+    create_universal_template,
+)
 from krama.templates.validators import TemplateValidator
 
 
