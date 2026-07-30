@@ -21,7 +21,7 @@ class LLMRouter:
         for provider in self.providers:
             try:
                 response = await provider.generate(prompt, system_prompt)
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 errors.append(f"{provider.name}: {exc}")
                 continue
             if response.strip():

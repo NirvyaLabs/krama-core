@@ -26,7 +26,7 @@ class IndiaAdapter(CountryAdapter):
         self.hiu = hiu
 
     async def verify_patient_identity(self, id_data: dict[str, Any]) -> PatientIdentity:
-        verifier = getattr(self.abha, "verify", None) or getattr(self.abha, "verify_abha")
+        verifier = getattr(self.abha, "verify", None) or self.abha.verify_abha
         identifier = str(
             id_data.get("abha_number")
             or id_data.get("health_id_number")
@@ -52,7 +52,7 @@ class IndiaAdapter(CountryAdapter):
         return PatientIdentity(patient_id=patient_id, display=display, raw=raw)
 
     async def publish_health_record(self, bundle: dict[str, Any]) -> str:
-        publish = getattr(self.hip, "publish")
+        publish = self.hip.publish
         if _can_call_with_bundle_only(publish):
             result = await publish(bundle)
         else:
@@ -69,7 +69,7 @@ class IndiaAdapter(CountryAdapter):
         if manager is None:
             raise ValidationError("HIU consent manager is not configured")
 
-        request = getattr(manager, "request", None) or getattr(manager, "request_consent")
+        request = getattr(manager, "request", None) or manager.request_consent
         if _can_call_with_patient_purpose(request):
             result = await request(patient_id, purpose)
         else:

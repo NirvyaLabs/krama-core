@@ -33,21 +33,21 @@ class OPConsultBuilder:
         self._allergies: list[tuple[str, str, str]] = []
         self._procedures: list[tuple[str, str, str | None]] = []
 
-    def set_patient(self, patient: FHIRPatient) -> "OPConsultBuilder":
+    def set_patient(self, patient: FHIRPatient) -> OPConsultBuilder:
         self._patient = patient
         return self
 
     def set_practitioner(
         self, practitioner: FHIRPractitioner
-    ) -> "OPConsultBuilder":
+    ) -> OPConsultBuilder:
         self._practitioner = practitioner
         return self
 
-    def set_organization(self, organization: FHIROrganization) -> "OPConsultBuilder":
+    def set_organization(self, organization: FHIROrganization) -> OPConsultBuilder:
         self._organization = organization
         return self
 
-    def set_encounter(self, encounter_date: str) -> "OPConsultBuilder":
+    def set_encounter(self, encounter_date: str) -> OPConsultBuilder:
         self._encounter_date = encounter_date
         return self
 
@@ -56,7 +56,7 @@ class OPConsultBuilder:
         description: str,
         *,
         snomed_code: str = "",
-    ) -> "OPConsultBuilder":
+    ) -> OPConsultBuilder:
         self._conditions.append(
             FHIRCondition(
                 description=description,
@@ -70,10 +70,10 @@ class OPConsultBuilder:
         self,
         code: str,
         display: str,
-        value: str | int | float | bool,
+        value: str | float | bool,
         *,
         unit: str = "",
-    ) -> "OPConsultBuilder":
+    ) -> OPConsultBuilder:
         self._observations.append(
             FHIRObservation(
                 code=code,
@@ -91,7 +91,7 @@ class OPConsultBuilder:
         dosage: str,
         *,
         snomed_code: str = "",
-    ) -> "OPConsultBuilder":
+    ) -> OPConsultBuilder:
         self._medications.append((name, dosage, snomed_code))
         return self
 
@@ -101,7 +101,7 @@ class OPConsultBuilder:
         *,
         reaction: str = "",
         snomed_code: str = "",
-    ) -> "OPConsultBuilder":
+    ) -> OPConsultBuilder:
         self._allergies.append((substance, reaction, snomed_code))
         return self
 
@@ -111,7 +111,7 @@ class OPConsultBuilder:
         display: str,
         *,
         performed_date: str | None = None,
-    ) -> "OPConsultBuilder":
+    ) -> OPConsultBuilder:
         self._procedures.append((code, display, performed_date))
         return self
 

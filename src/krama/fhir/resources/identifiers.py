@@ -56,7 +56,7 @@ class PatientIdentifier(BaseModel):
         return value.strip() if isinstance(value, str) else value
 
     @model_validator(mode="after")
-    def resolve_system(self) -> "PatientIdentifier":
+    def resolve_system(self) -> PatientIdentifier:
         if self.system:
             return self
 
@@ -82,19 +82,19 @@ class PatientIdentifier(BaseModel):
         return identifier
 
     @classmethod
-    def india_abha(cls, value: str) -> "PatientIdentifier":
+    def india_abha(cls, value: str) -> PatientIdentifier:
         return cls(value=value, type=PatientIdentifierType.INDIA_ABHA)
 
     @classmethod
-    def india_abha_address(cls, value: str) -> "PatientIdentifier":
+    def india_abha_address(cls, value: str) -> PatientIdentifier:
         return cls(value=value, type=PatientIdentifierType.INDIA_ABHA_ADDRESS)
 
     @classmethod
-    def australia_ihi(cls, value: str) -> "PatientIdentifier":
+    def australia_ihi(cls, value: str) -> PatientIdentifier:
         return cls(value=value, type=PatientIdentifierType.AUSTRALIA_IHI)
 
     @classmethod
-    def australia_mrn(cls, value: str, assigner: str) -> "PatientIdentifier":
+    def australia_mrn(cls, value: str, assigner: str) -> PatientIdentifier:
         return cls(
             value=value,
             type=PatientIdentifierType.AUSTRALIA_MRN,
@@ -104,7 +104,7 @@ class PatientIdentifier(BaseModel):
         )
 
     @classmethod
-    def us_mrn(cls, value: str, assigner: str) -> "PatientIdentifier":
+    def us_mrn(cls, value: str, assigner: str) -> PatientIdentifier:
         return cls(
             value=value,
             type=PatientIdentifierType.US_MRN,
@@ -114,11 +114,11 @@ class PatientIdentifier(BaseModel):
         )
 
     @classmethod
-    def uk_nhs_number(cls, value: str) -> "PatientIdentifier":
+    def uk_nhs_number(cls, value: str) -> PatientIdentifier:
         return cls(value=value, type=PatientIdentifierType.UK_NHS_NUMBER)
 
     @classmethod
-    def uk_mrn(cls, value: str, assigner: str) -> "PatientIdentifier":
+    def uk_mrn(cls, value: str, assigner: str) -> PatientIdentifier:
         return cls(
             value=value,
             type=PatientIdentifierType.UK_MRN,

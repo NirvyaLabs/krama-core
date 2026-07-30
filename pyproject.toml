@@ -27,6 +27,7 @@ dependencies = [
     "httpx>=0.27.0,<1.0",
     "pydantic>=2.0,<3.0",
     "pydantic-settings>=2.3.0,<3.0",
+    "typing-extensions>=4.14.1",
 ]
 
 [project.optional-dependencies]
@@ -36,7 +37,7 @@ dev = [
     "pip-audit",
     "pytest>=7.0",
     "pytest-cov",
-    "ruff",
+    "ruff>=0.16.0,<0.17.0",
     "twine",
 ]
 ai = [

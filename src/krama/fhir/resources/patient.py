@@ -25,7 +25,7 @@ class FHIRPatient(BaseModel):
         return gender
 
     @model_validator(mode="after")
-    def require_identifier(self) -> "FHIRPatient":
+    def require_identifier(self) -> FHIRPatient:
         if not self.abha_id and not self.identifiers:
             raise ValueError("FHIRPatient requires abha_id or identifiers")
         return self

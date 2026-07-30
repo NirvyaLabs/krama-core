@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pydantic import SecretStr
+from typing_extensions import Self
 
 from krama.abha import ABHAClient
 from krama.adapters import (
@@ -89,7 +90,7 @@ class KramaClient:
     async def close(self) -> None:
         await self.http.close()
 
-    async def __aenter__(self) -> "KramaClient":
+    async def __aenter__(self) -> Self:
         return self
 
     async def __aexit__(self, *args) -> None:

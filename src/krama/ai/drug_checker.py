@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 from pydantic import BaseModel, Field
 
 from krama.ai.clinical_nlp import SAFETY_DISCLAIMER
@@ -19,7 +21,7 @@ class InteractionResult(BaseModel):
 class DrugChecker:
     """Conservative rule-based medication checks."""
 
-    _INTERACTION_WARNINGS = {
+    _INTERACTION_WARNINGS: ClassVar[dict[frozenset[str], str]] = {
         frozenset({"warfarin", "aspirin"}): "Warfarin with aspirin may increase bleeding risk.",
         frozenset({"methotrexate", "trimethoprim"}): (
             "Methotrexate with trimethoprim may increase marrow toxicity risk."

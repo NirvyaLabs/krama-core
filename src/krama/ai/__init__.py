@@ -22,6 +22,7 @@ class AIAssistant:
 
 
 __all__ = [
+    "SAFETY_DISCLAIMER",
     "AIAssistant",
     "ClinicalNLP",
     "DrugChecker",
@@ -32,7 +33,6 @@ __all__ = [
     "InteractionResult",
     "LLMProvider",
     "LLMRouter",
-    "SAFETY_DISCLAIMER",
     "TriageClassifier",
     "TriageResult",
 ]

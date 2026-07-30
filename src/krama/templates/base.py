@@ -43,7 +43,7 @@ class TemplateSection(BaseModel):
         return section_type
 
     @model_validator(mode="after")
-    def validate_options_and_items(self) -> "TemplateSection":
+    def validate_options_and_items(self) -> TemplateSection:
         if self.type in {"select", "radio", "dosha_assessment"} and not self.options:
             raise ValueError(f"{self.type} sections require options")
         if self.type == "checklist" and not self.items:
@@ -81,7 +81,7 @@ class ClinicalTemplate(BaseModel):
         return value.strip().upper() or "GLOBAL"
 
     @model_validator(mode="after")
-    def validate_unique_sections(self) -> "ClinicalTemplate":
+    def validate_unique_sections(self) -> ClinicalTemplate:
         section_ids = [section.id for section in self.sections]
         if len(section_ids) != len(set(section_ids)):
             raise ValueError("template section ids must be unique")

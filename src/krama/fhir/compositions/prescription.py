@@ -27,23 +27,23 @@ class PrescriptionBuilder:
         self._medications: list[tuple[str, str, str]] = []
         self._diagnoses: list[tuple[str, str]] = []
 
-    def set_patient(self, patient: FHIRPatient) -> "PrescriptionBuilder":
+    def set_patient(self, patient: FHIRPatient) -> PrescriptionBuilder:
         self._patient = patient
         return self
 
     def set_practitioner(
         self, practitioner: FHIRPractitioner
-    ) -> "PrescriptionBuilder":
+    ) -> PrescriptionBuilder:
         self._practitioner = practitioner
         return self
 
     def set_organization(
         self, organization: FHIROrganization
-    ) -> "PrescriptionBuilder":
+    ) -> PrescriptionBuilder:
         self._organization = organization
         return self
 
-    def set_encounter(self, encounter_date: str) -> "PrescriptionBuilder":
+    def set_encounter(self, encounter_date: str) -> PrescriptionBuilder:
         self._encounter_date = encounter_date
         return self
 
@@ -53,7 +53,7 @@ class PrescriptionBuilder:
         dosage: str,
         *,
         snomed_code: str = "",
-    ) -> "PrescriptionBuilder":
+    ) -> PrescriptionBuilder:
         self._medications.append((name, dosage, snomed_code))
         return self
 
@@ -62,7 +62,7 @@ class PrescriptionBuilder:
         description: str,
         *,
         snomed_code: str = "",
-    ) -> "PrescriptionBuilder":
+    ) -> PrescriptionBuilder:
         self._diagnoses.append((description, snomed_code))
         return self
 

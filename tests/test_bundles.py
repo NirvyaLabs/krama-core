@@ -1,6 +1,7 @@
 import json
 
 import pytest
+from pydantic import ValidationError as PydanticValidationError
 
 from krama.fhir.bundles import (
     DiagnosisInfo,
@@ -428,7 +429,7 @@ class TestInputValidation:
             )
 
     def test_missing_required_field_raises_error(self):
-        with pytest.raises(Exception):
+        with pytest.raises(PydanticValidationError):
             PatientInfo(
                 name="Test",
                 gender="male",

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import Awaitable, Callable
-from typing import Any
+from typing import Any, ClassVar
 
 import httpx
 
@@ -18,7 +18,7 @@ SleepFunc = Callable[[float], Awaitable[None]]
 class ABDMHttpClient:
     """Small async ABDM Gateway client with auth injection and retry."""
 
-    _ALLOWED_METHODS = {"GET", "POST", "PUT", "PATCH", "DELETE"}
+    _ALLOWED_METHODS: ClassVar[set[str]] = {"GET", "POST", "PUT", "PATCH", "DELETE"}
 
     def __init__(
         self,

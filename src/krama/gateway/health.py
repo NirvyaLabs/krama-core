@@ -39,7 +39,7 @@ class GatewayHealthClient:
         started = time.perf_counter()
         try:
             await self._http.get(self.health_path, auth_required=False)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             return GatewayHealthStatus(
                 connected=False,
                 latency=None,
