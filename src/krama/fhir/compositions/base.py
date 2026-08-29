@@ -7,6 +7,7 @@ from html import escape
 from typing import Any
 
 from krama.fhir.resources.base import FHIRDict, bundle_entry, make_urn, now_iso
+from krama.fhir.validation import validate_fhir_bundle
 
 BUNDLE_ID_SYSTEM = "https://krama.dev/bundle-id"
 
@@ -31,13 +32,15 @@ def section(title: str, refs: list[str], text: str = "") -> FHIRDict:
 def assemble_document_bundle(resources: list[FHIRDict]) -> FHIRDict:
     if not resources or resources[0].get("resourceType") != "Composition":
         raise ValueError("FHIR document bundles must start with Composition")
-    return {
+    bundle = {
         "resourceType": "Bundle",
         "type": "document",
         "timestamp": now_iso(),
         "identifier": {"system": BUNDLE_ID_SYSTEM, "value": str(uuid.uuid4())},
         "entry": [bundle_entry(resource) for resource in resources],
     }
+    validate_fhir_bundle(bundle)
+    return bundle
 
 
 def ref_for(resource: FHIRDict) -> str:
