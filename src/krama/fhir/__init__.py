@@ -8,6 +8,7 @@ from krama.fhir.bundles import (
 from krama.fhir.compositions import OPConsultBuilder, PrescriptionBuilder
 from krama.fhir.facade import FHIRFacade
 from krama.fhir.resources import PatientIdentifier, PatientIdentifierType
+from krama.fhir.validation import validate_fhir_bundle
 
 __all__ = [
     "FHIRFacade",
@@ -18,4 +19,5 @@ __all__ = [
     "create_discharge_summary_bundle",
     "create_op_consult_bundle",
     "create_prescription_bundle",
+    "validate_fhir_bundle",
 ]

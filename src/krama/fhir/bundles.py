@@ -9,6 +9,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
+from krama.fhir.validation import validate_fhir_bundle
+
 FHIRResource = dict[str, Any]
 
 VALID_GENDERS = {"male", "female", "other", "unknown"}
@@ -212,17 +214,20 @@ def _build_composition(
 
 
 def _wrap_as_bundle_entry(resource: FHIRResource, full_url: str) -> FHIRResource:
+    resource.setdefault("id", full_url.removeprefix("urn:uuid:"))
     return {"fullUrl": full_url, "resource": resource}
 
 
 def _assemble_document_bundle(entries: list[FHIRResource]) -> FHIRResource:
-    return {
+    bundle = {
         "resourceType": "Bundle",
         "type": "document",
         "timestamp": _make_timestamp(),
         "identifier": {"system": BUNDLE_ID_SYSTEM, "value": str(uuid.uuid4())},
         "entry": entries,
     }
+    validate_fhir_bundle(bundle)
+    return bundle
 
 
 def _build_medication_entries(
